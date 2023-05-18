@@ -4,7 +4,7 @@ using namespace std;
 #define keyNum 11
 #define opNum 4
 #define deliNum 7
-#define grammarNum 49
+#define grammarNum 46
 
 //action类，对应action表中的一个动作（移入或归约）
 class Action{
@@ -699,7 +699,7 @@ void outputSignStk(){
 //读取文法并保存所有的终结符与非终结符 
 int getGrammarList(){
 	//读入所有文法（包括增广文法），保存终结符与非终结符 
-	ifs.open("grammar.txt",ios::in);
+	ifs.open("lr_grammar.txt",ios::in);
 	if (!ifs.is_open())
 	{
 		cout << "文件打开失败" <<endl;
