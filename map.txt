@@ -12,7 +12,7 @@ break k
 do d
 while w
 else s
-join j
+join J
 || o
 num n
 && a
@@ -28,4 +28,7 @@ real r
 true t
 false m
 basic b
-
+# @
+if f
+<= l
+>= g

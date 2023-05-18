@@ -1,10 +1,15 @@
+
 #include <bits/stdc++.h>
+#include"head.h"
+#include"transfer.cpp"
 using namespace std;
 
 #define keyNum 11
 #define opNum 4
 #define deliNum 7
 #define grammarNum 46
+
+
 
 //action类，对应action表中的一个动作（移入或归约）
 class Action{
@@ -601,7 +606,7 @@ char getInputChar(string token,string type){
 		return 'i';
 } 
 
-//汇报错误函数
+//打印错误信息
 string reportError(char cur){
 	if (cur=='b')
 		return "int float char bool";
@@ -659,7 +664,8 @@ string reportError(char cur){
 	
 } 
 
-//输出状态栈内容
+
+//输出状态栈
 void outputStateStk(){
 	stack<int> tmp;
 	
@@ -676,7 +682,7 @@ void outputStateStk(){
 	
 	ofs <<"\t\t";
 } 
-//输出符号栈内容
+//输出符号栈
 void outputSignStk(){
 	stack<char> tmp;
 	
@@ -689,7 +695,15 @@ void outputSignStk(){
 	
 	while (!tmp.empty()){
 		ss[0] = tmp.top();
-		ofs << ss << ",";
+        string tt = "";
+        if(tran_ch_to_stirng.count(ss[0])){
+            tt = tran_ch_to_stirng[ss[0]];
+        }else{
+            tt = ss[0];
+        }
+
+		ofs << tt<< ",";
+
 		signStk.push(tmp.top());
 		tmp.pop();
 	}
@@ -697,7 +711,7 @@ void outputSignStk(){
 	ofs <<"\t\t";
 } 
 //读取文法并保存所有的终结符与非终结符 
-int getGrammarList(){
+int getGrammar(){
 	//读入所有文法（包括增广文法），保存终结符与非终结符 
 	ifs.open("lr_grammar.txt",ios::in);
 	if (!ifs.is_open())
@@ -743,7 +757,7 @@ int getGrammarList(){
 	return 0;
 }
 //构造所有非终结符的FIRST集 
-void buildFirstSet(){
+void buildFirst(){
 	//准备FIRST集，其中firstSet是非终结符和它的first集在vec中下标的键值对，即<非终结符,下标>
 	//vec是每个非终结符对应的first集列表，以下标来取 
 	int i = 0;
@@ -820,7 +834,7 @@ void buildFirstSet(){
 		} 
 	} 
 } 
-//构造项集以及项集间的转移关系 
+//构造项目集以及项目集间的状态转移关系
 void buildItems(){
 	//项目集0中，初始只有第0个文法，即增广文法，小数点在下标0位，展望符为'#' 
 	Project project(0,0,'$'); 
@@ -846,8 +860,8 @@ void buildItems(){
 	}
 } 
 //构造action表
-void buildActionTable(){
-	//构造分析表 
+void buildAction(){
+
 	//先进行归约的检测 
 	
 	for (int i=0;i<projectItems.size();i++)
@@ -884,7 +898,7 @@ void buildActionTable(){
 	} 
 } 
 //构造分析结果
-void buildResult(){
+void getResult(){
 	//进行分析过程的构造
 	int curState = 0;	//状态栈的初始栈顶
 	ifs.open("in.txt",ios::in);
@@ -910,7 +924,7 @@ void buildResult(){
 	} while (rec);
 	rec = true; 
 	
-	//cur是现在的输入符号，怎么取到？暂定 
+	//cur是现在的输入符号
 	char cur = getInputChar(token,type); 
 	
 	stateStk.push(0);
@@ -939,7 +953,12 @@ void buildResult(){
 		} 
 		else 
 		{
-			ofs << cur;
+            if (tran_ch_to_stirng.count(cur)){
+                ofs << tran_ch_to_stirng[cur];
+            }else{
+                ofs << cur;
+            }
+
 		} 
 		//否则输出下一个符号对应的字母（终结符）
 		//非终结符只会在符号栈出现
@@ -958,7 +977,7 @@ void buildResult(){
 			int nextState = actionRow[i].nextState;
 			if (nextState==0)
 			{
-				ofs << "接受"<<endl;
+				ofs << "接受输入"<<endl;
 				//如果==0，说明接受了
 				done = true;	
 			} 
@@ -995,8 +1014,18 @@ void buildResult(){
 			{
 				nextState = nextState*(-1);
 				string grammar = grammarList[nextState];
-				ofs << "按照 " << grammar << " 归约";
-			
+				string g_temp = "";
+				for(int i = 0;i<grammar.size();i++){
+					if (tran_ch_to_stirng.count(grammar[i])){
+						g_temp = g_temp + tran_ch_to_stirng[grammar[i]];
+					}
+					else{
+						g_temp = g_temp + grammar[i];
+					}
+				}
+				// ofs << "按照文法" << g_temp << " 归约";
+				ofs << " 归约";
+
 				string body = grammar.substr(3);
 				int len = body.length();
 				if (body[0]== '@')
@@ -1057,7 +1086,24 @@ void outputItems(){
 			string ss = s.substr(3);
 			string left = s.substr(0,1);
 			ss.insert(projectItems[i][j].now,1,'.');
-			itemOfs << left <<"->" << ss << "," << projectItems[i][j].next <<endl;
+			char l = left[0];
+			string sl = tran_ch_to_stirng[l];
+			string temps = "";
+			for(int i = 0;i<ss.size();i++){
+				
+				string t ="";
+				char a = ss[i];
+				// t = t + a;
+
+				if (tran_ch_to_stirng.count(ss[i]))
+					t = t + tran_ch_to_stirng[ss[i]]+" ";
+				else t = t+a +" ";
+				
+				temps += t;
+			}
+			
+			
+			itemOfs << sl <<"->" <<temps << "," << projectItems[i][j].next <<endl;
 		}
 		itemOfs << "==========================="<<endl;
 	}
@@ -1066,13 +1112,18 @@ void outputItems(){
 }
 
 //输出action表
-void outputActionTable(){
+void outputAction(){
 	ofstream actionOfs;
 	actionOfs.open("action.txt",ios::out);
 	
 	for (int i=0;i<actionTable.size();i++)
 		for (int j=0;j<actionTable[i].size();j++){
-			actionOfs << "(" << i << "," << actionTable[i][j].nextChar << "," << actionTable[i][j].nextState<<")"<<endl;
+			string tt = "";
+			if (tran_ch_to_stirng.count(actionTable[i][j].nextChar)){
+				tt = tt + tran_ch_to_stirng[actionTable[i][j].nextChar];
+			}
+			else tt = tt + actionTable[i][j].nextChar;
+			actionOfs << "(" << i << "," << tt << "," << actionTable[i][j].nextState<<")"<<endl;
 		}
 	
 	actionOfs.close();
@@ -1082,25 +1133,30 @@ void outputActionTable(){
 
 int main(){	
 	//得到文法 
-	int flag = getGrammarList();
+	get_map();
+
+//	for(auto it:tran_ch_to_stirng){
+//		cout<<it.first<<"----"<<it.second<<endl;
+//	}
+	int flag = getGrammar();
 	//如果读取文法没有出错 
-	if (flag!=-1)
+	if (flag!=-1) //lr_grammar.txt 文件打开失败
 	{
 		//构造非终结符FIRST集 
-		buildFirstSet(); 
+        buildFirst();
 		//构造项集以及项集间的转移关系
 		buildItems(); 
 		//构造action表
-		buildActionTable();
+        buildAction();
 		//根据action表来处理输入文件in.txt
-		buildResult(); 
+        getResult();
 	} 
 	
 	//内容输出
 	//输出项目集 
 	outputItems();
 	//输出action表
-	outputActionTable(); 
+    outputAction();
 	
 	return 0;
 } 
