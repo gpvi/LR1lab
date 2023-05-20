@@ -1,15 +1,5 @@
 {
-	while(true){
-	    while(false){
-	        int i;
-	        if(a == b || b == c && d > c * v) {
-	            do{
-	                int[3] str;
-                    int s;
-                    str[0] = s;
-
-	            }while(b == c);
-	        }
-	    }
-	}
+	int i;
+	char c;
+	float d;
 }

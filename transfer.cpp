@@ -97,10 +97,6 @@ void connect_left_right(){
 		c++ ;
 		// cout<<temp<<endl;
 	}
-
-//	for(auto it : sentences){
-//		cout<<it<<endl;
-//	}
 }
 //映射后的文法
 void out_put(){

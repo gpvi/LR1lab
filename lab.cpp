@@ -1,20 +1,29 @@
+/*
+  整合实验一实验二
+  实验二函数从280行开始
+  实验人员：032002632，032002622
+  宏变量解释：
+  opnum:操作符数量，用于实验一部分
+  deliNum:界符数量，用于实验一部分
+  grammmarNum:文法数量用于实验二部分
 
+ */
 #include <bits/stdc++.h>
 #include"head.h"
 #include"transfer.cpp"
 using namespace std;
-
 #define keyNum 11
 #define opNum 4
 #define deliNum 7
+
 #define grammarNum 46
 
 
 
-//action类，对应action表中的一个动作（移入或归约）
+//action类，对应action表功能单元
 class Action{
 public:
-	int nextState;	//接受到符号决定要移入还是归约
+	int nextState;	//接受到符号决定要移入还是归约相当于r/s
 	char nextChar;	//下一个符号 
 	Action(int nextState,char nextChar){
 		this->nextChar = nextChar;
@@ -22,7 +31,7 @@ public:
 	} 
 }; 
 
-//LR1项类 
+//单个文法的状态，每个文法在不同状态集中的表示形式
 class Project{
 public:
 	int num;	//文法序号 
@@ -35,7 +44,7 @@ public:
 	}
 };
 
-//转移类，对应两个项集之间的转移关系 
+//对应两个项目之间的跳转关系 ，包括接受到什么符号跳转到什么状态
 class Tran{
 public:
 	int begin;
@@ -48,9 +57,9 @@ public:
 	}
 }; 
 
-//非终结符
+//非终结符集合
 set<char> cn; 
-//终结符 
+//终结符 集合
 set<char> ct;
 //FIRST集(key：非终结符 value：first集的下标 
 map<char,int> firstSet; 
@@ -277,9 +286,9 @@ string scan(bool *flag,ifstream *ifs){
 			
 	return str + " Error";
 }
-// 以上为词法分析函数
+// 以上为词法分析部分
 //--------------------------------------------------------------------------------------
-// 以下为语法分析函数
+// 以下为语法分析部分
 
 //判断是否为非终结符 
 bool isCn(char c){
