@@ -3,9 +3,9 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
-  <component name="CMakePresetLoader"><![CDATA[{
-  "useNewFormat": true
-}]]></component>
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
   <component name="CMakeReloadState">
     <option name="reloaded" value="true" />
   </component>
@@ -21,21 +21,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5aa96d32-07de-46cb-966a-f93a995b9a58" name="Changes" comment="转换">
-      <change afterPath="$PROJECT_DIR$/head.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ErrorReport.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ErrorReport.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/action.txt" beforeDir="false" afterPath="$PROJECT_DIR$/action.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grammar.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/in.txt" beforeDir="false" afterPath="$PROJECT_DIR$/in.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lab.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/lab.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lab.exe" beforeDir="false" afterPath="$PROJECT_DIR$/lab.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lr_grammar.txt" beforeDir="false" afterPath="$PROJECT_DIR$/lr_grammar.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/map.txt" beforeDir="false" afterPath="$PROJECT_DIR$/map.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projectItems.txt" beforeDir="false" afterPath="$PROJECT_DIR$/projectItems.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/out.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/transfer.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/transfer.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/transfer.exe" beforeDir="false" afterPath="$PROJECT_DIR$/transfer.exe" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +60,7 @@
     "WebServerToolWindowFactoryState": "false",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "last_opened_file_path": "D:/GAN/实验二/LR1lab/LR1lab",
+    "last_opened_file_path": "G:/code/c_cpp_projects/diy_compiler",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -77,7 +68,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="C/C++ 文件.lab.cpp">
+  <component name="RunManager" selected="C/C++ File.cmake">
     <configuration name="Cmake" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="true" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" EXPLICIT_BUILD_TARGET_NAME="all">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -102,12 +93,6 @@
         <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="C/C++ 文件.lab.cpp" />
-        <item itemvalue="C/C++ 文件.transfer.cpp" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -126,6 +111,7 @@
       <workItem from="1684221354877" duration="1232000" />
       <workItem from="1684391609238" duration="21000" />
       <workItem from="1684391658976" duration="7774000" />
+      <workItem from="1684914689349" duration="15000" />
     </task>
     <task id="LOCAL-00001" summary="转换">
       <created>1684220173782</created>

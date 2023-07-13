@@ -1,5 +1,15 @@
 {
-	int i;
-	char c;
-	float d;
+	while(true){
+	    while(false){
+	        int i;
+	        if(a == b || b == c && d > c * v) {
+	            do{
+	                int c;
+					float ff;
+
+	            }while(b == c);
+	        }
+	    }
+	}
+
 }

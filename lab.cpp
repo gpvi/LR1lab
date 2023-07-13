@@ -6,6 +6,11 @@
   opnum:操作符数量，用于实验一部分
   deliNum:界符数量，用于实验一部分
   grammmarNum:文法数量用于实验二部分
+	输入文件：in.txt
+	输出文件：
+		out.txt,用于输出符号栈的运行过程
+		ErrorReoprt.txt 错误报告文件
+		action.txt，action表
 
  */
 #include <bits/stdc++.h>
@@ -15,7 +20,6 @@ using namespace std;
 #define keyNum 11
 #define opNum 4
 #define deliNum 7
-
 #define grammarNum 46
 
 
@@ -63,7 +67,7 @@ set<char> cn;
 set<char> ct;
 //FIRST集(key：非终结符 value：first集的下标 
 map<char,int> firstSet; 
-//first集（按下标取） 
+//first集（按下标存储） 
 vector<set<char>> vec; 
 //项目集
 vector<vector<Project>> projectItems;
@@ -296,12 +300,13 @@ bool isCn(char c){
 		return true;
 } 
 
+
 //判断是否为终结符
 bool isCt(char c){
 	return ( ' ' < c && c < '@' ) || ('Z' < c && c <= 128);
 } 
 
-//确定展望符
+//确定展望符 使用first(αβ)
 string judgeNext(Project project){
 	string next;
 	
@@ -310,14 +315,13 @@ string judgeNext(Project project){
 	int now = project.now;
 	while (flag){
 		flag = false;
-		//如果点位置在最后一个字符的前后 
+		//如果点位置在最后一个字符的前边 
 		if ( now+1 >= grammarList[project.num].substr(3).length() )
 		{
 			//那么原LR1项的展望符就是这个新的LR1项的展望符 
 			next.append(1,project.next);
 			break;
 		}
-		
 		//如果至少在产生式最后一个字符的前两位，得到未来的第二个符号（eg. A->a·BC，则现在nextChar为c）
 		//(未来的第一个符号，即这里的B，是已经确定为非终结符了）
 		char nextChar = grammarList[project.num].substr(3)[now+1];
@@ -326,7 +330,7 @@ string judgeNext(Project project){
 		{
 			next.append(1,nextChar);
 		}
-		//如果是终结符，那就求它的FIRST集，然后FIRST集中每个符号都可以作为展望符 
+		//如果是非终结符，那就求它的FIRST集，然后FIRST集中每个符号都可以作为展望符 
 		else
 		{
 			int pos = firstSet[nextChar];
@@ -409,7 +413,6 @@ int isRepeat2(){
 //求项目集闭包
 void Closure(int t){
 	vector<Project>* item = &projectItems[t];
-	
 	for (int i=0;i<item->size();i++)
 	{
 		//对于每一个LR1项 
@@ -422,7 +425,7 @@ void Closure(int t){
 		
 		if (body.length() <= project.now)
 		{
-			// 点在 body 末尾，则不用在此项上扩展项目集了，可以continue
+			// 点在 body 末尾说明此项已经进入最终的归约状态，则不用在此项上扩展项目集了，可以continue
 			continue;
 		} 
 		
@@ -442,10 +445,12 @@ void Closure(int t){
 		 	if ( grammarList[j].substr(0,pos)[0] == c )
 			{
 				//确定展望符 
+				// 其中确定展望符
 			 	string nexts = judgeNext(project); 
 			 	for (int k=0;k<nexts.length();k++)
 			 	{
 			 	 	Project* tmp = new Project(j,0,nexts[k]);
+					// 去重
 					if (!isRepeat1(*tmp,t))	
 					{
 					 	item->push_back(*tmp);	
@@ -495,8 +500,8 @@ void inputWithCt(int t,vector<Project> item){
 		}		
 	} 
 }  
-
-//输入为非终结符的处理
+//输入为非终结符的处理使用（aβ）first集
+// 如果含空串，继续看后边的β
 void inputWithCn(int t,vector<Project> item){
 	for (set<char>::iterator it=cn.begin();it!=cn.end();it++) 
 	{
@@ -770,18 +775,21 @@ void buildFirst(){
 	//准备FIRST集，其中firstSet是非终结符和它的first集在vec中下标的键值对，即<非终结符,下标>
 	//vec是每个非终结符对应的first集列表，以下标来取 
 	int i = 0;
+	//first集初始化
 	for (set<char>::iterator it=cn.begin();it!=cn.end();it++)
 	{
+		//it 非终结符
 		firstSet.insert(pair<char,int>(*it,i++));
 		set<char> *tmpSet = new set<char>;
 		vec.push_back(*tmpSet);
 	}
+
 	firstSet.insert(pair<char,int>('\'',i));
 	set<char> *tmpSet = new set<char>;
 	vec.push_back(*tmpSet);
 	
-
 	bool hasChanged = true;
+
 	while (hasChanged){
 		hasChanged = false;
 		for (int i=0;i<grammarNum;i++)
@@ -851,7 +859,6 @@ void buildItems(){
 	item->push_back(project);
 	//初始化项目集的集合，此时之中只有项目集0
 	projectItems.push_back(*item);
-	
 	//求项目集0的闭包 
 	Closure(0);
 	
@@ -863,7 +870,6 @@ void buildItems(){
 		//下一个输入符为终结符
 		//i为项集的序号，item为项集本身 
 		inputWithCt(i,item); 
-		
 		//下一个输入符为非终结符 
 		inputWithCn(i,item);
 	}
@@ -888,6 +894,7 @@ void buildAction(){
 			string grammar = grammarList[pro.num];
 			string body = grammar.substr(3);
 			int length = body.length();
+			//可归约项，状态为负，其值代表对应句子
 			if (pro.now == length || ( pro.now==0 && body[0]=='@' )) 
 			{
 				int state = (pro.num)*(-1);
@@ -906,6 +913,7 @@ void buildAction(){
 		actionTable[tran.begin].push_back(*action); 
 	} 
 } 
+//分析
 //构造分析结果
 void getResult(){
 	//进行分析过程的构造
@@ -1019,6 +1027,7 @@ void getResult(){
 					} while (rec);
 				}	
 			}
+			//nextState<0,进入goto表，进行归约处理
 			else
 			{
 				nextState = nextState*(-1);
@@ -1143,7 +1152,6 @@ void outputAction(){
 int main(){	
 	//得到文法 
 	get_map();
-
 //	for(auto it:tran_ch_to_stirng){
 //		cout<<it.first<<"----"<<it.second<<endl;
 //	}
@@ -1160,7 +1168,6 @@ int main(){
 		//根据action表来处理输入文件in.txt
         getResult();
 	} 
-	
 	//内容输出
 	//输出项目集 
 	outputItems();

@@ -1,5 +1,12 @@
 //#include<bits/stdc++.h>
 //using namespace std;
+/*
+使用文件lr_sentence.txt 原始语法
+map.txt映射关系
+创建文件：lr_grammar.txt用于进行求解的形式
+
+
+*/
 #include"head.h"
 void Stringsplit(string str,  const char split,vector<string>& res)
 {
